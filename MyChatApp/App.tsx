@@ -1,22 +1,20 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './src/pages/WelcomeScreen';
+import LoadingScreen from './src/pages/LoadingScreen';
+
+const Stack = createNativeStackNavigator();
 
 const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <WelcomeScreen />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="LoadingScreen">
+        <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  }
-});
 
 export default App;
