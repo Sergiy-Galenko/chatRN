@@ -9,7 +9,7 @@ const WelcomeScreen: React.FC = () => {
     const navigation = useNavigation();
 
     const handleLogin = () => {
-        if (email === "test@text.com" && password === "test") {
+        if (email === "Test" && password === "test") {
             navigation.navigate('Dashboard'); // Navigate to DashboardScreen
         } else {
             Alert.alert("Invalid Credentials", "The email or password you entered is incorrect.");

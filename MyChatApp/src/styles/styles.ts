@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#5e42a6',
+    color: '#42a6f5',
     marginTop: 10,
   },
   subtitle: {
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   button: {
-    backgroundColor: '#5e42a6',
+    backgroundColor: '#42a6f5', // Змінено колір на блакитний
     paddingVertical: 20,
     paddingHorizontal: 25,
     borderRadius: 25,

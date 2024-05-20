@@ -11,7 +11,7 @@ const LoadingScreen: React.FC = ( {navigation} ) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Завантаження MyChatApp...</Text>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <ActivityIndicator size="large" color="#42a6f5" />
     </View>
   );
 };
