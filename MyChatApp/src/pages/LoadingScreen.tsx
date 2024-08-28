@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 
-const LoadingScreen: React.FC = ( {navigation} ) => {
+const LoadingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('WelcomeScreen');
-    }, 3000); // Час завантаження 3 секунди
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          Alert.alert('Завантаження завершено', 'Додаток завантажився');
+          navigation.navigate('WelcomeScreen');
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 30); // Обновление прогресса каждые 30 мс
+
+    return () => clearInterval(interval); // Очистка интервала при размонтировании
   }, [navigation]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Завантаження MyChatApp...</Text>
       <ActivityIndicator size="large" color="#42a6f5" />
+      <Text style={styles.progressText}>{progress}%</Text>
     </View>
   );
 };
@@ -26,6 +39,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginBottom: 20,
+  },
+  progressText: {
+    fontSize: 16,
+    marginTop: 20,
   }
 });
 

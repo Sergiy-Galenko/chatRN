@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Image, FlatList, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { styles } from '../styles/MusicPlayerScreenStyles';
@@ -17,7 +17,7 @@ const MusicPlayerScreen: React.FC = () => {
         fetchMusicFiles();
     }, []);
 
-    const fetchMusicFiles = async () => {
+    const fetchMusicFiles = useCallback(async () => {
         const { status } = await MediaLibrary.requestPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert('Permission Denied', 'We need permission to access your media library.');
@@ -25,34 +25,30 @@ const MusicPlayerScreen: React.FC = () => {
         }
         const media = await MediaLibrary.getAssetsAsync({
             mediaType: 'audio',
-            first: 100, // Fetch first 100 audio files
+            first: 100,
         });
         setMusicFiles(media.assets);
-    };
+    }, []);
 
-    const handleSearch = (query: string) => {
+    const handleSearch = useCallback((query: string) => {
         setSearchQuery(query);
         const filteredFiles = (isCommunityMusic ? musicFiles : myMusicFiles).filter(file => 
             file.filename.toLowerCase().includes(query.toLowerCase())
         );
-        if (isCommunityMusic) {
-            setMusicFiles(filteredFiles);
-        } else {
-            setMyMusicFiles(filteredFiles);
-        }
-    };
+        isCommunityMusic ? setMusicFiles(filteredFiles) : setMyMusicFiles(filteredFiles);
+    }, [isCommunityMusic, musicFiles, myMusicFiles]);
 
-    const handleMenuPress = (menu: string) => {
+    const handleMenuPress = useCallback((menu: string) => {
         if (menu === 'chat') {
             navigation.navigate('Dashboard');
         } else {
             console.log(`Menu ${menu} pressed`);
         }
-    };
+    }, [navigation]);
 
-    const pickMusicFile = async () => {
+    const pickMusicFile = useCallback(async () => {
         setLoading(true);
-        let result = await DocumentPicker.getDocumentAsync({
+        const result = await DocumentPicker.getDocumentAsync({
             type: 'audio/*',
             copyToCacheDirectory: true,
         });
@@ -66,7 +62,7 @@ const MusicPlayerScreen: React.FC = () => {
             setMyMusicFiles(prevFiles => [...prevFiles, newMusicFile]);
         }
         setLoading(false);
-    };
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -88,7 +84,7 @@ const MusicPlayerScreen: React.FC = () => {
                     onPress={() => {
                         setIsCommunityMusic(true);
                         setSearchQuery('');
-                        fetchMusicFiles(); // Reset community music list on switch
+                        fetchMusicFiles();
                     }}
                 >
                     <Text style={[styles.switchButtonText, isCommunityMusic && styles.activeButtonText]}>Ком'юніті музика</Text>

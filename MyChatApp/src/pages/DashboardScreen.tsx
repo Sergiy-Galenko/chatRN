@@ -35,9 +35,6 @@ const DashboardScreen: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Ваші чати</Text>
-            <Text style={styles.subtitle}>This is a simple dashboard screen of the app.</Text>
-            
             <View style={styles.searchContainer}>
                 <Image source={require('../img/lupa.png')} style={styles.searchIcon} />
                 <TextInput 
@@ -46,6 +43,9 @@ const DashboardScreen: React.FC = () => {
                     autoFocus={isModalVisible}
                 />
             </View>
+
+            <Text style={styles.title}>Ваші чати</Text>
+            <Text style={styles.subtitle}>This is a simple dashboard screen of the app.</Text>
 
             <TouchableOpacity style={styles.writeButton} onPress={handleWriteTo}>
                 <Text style={styles.writeButtonText}>Кому написати?</Text>
